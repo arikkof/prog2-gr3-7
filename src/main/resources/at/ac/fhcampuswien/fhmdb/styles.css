@@ -29,6 +29,11 @@
     -fx-text-fill: white;
 }
 
+.text-genre {
+    -fx-font-style: italic;
+    -fx-text-fill: #ffffff;
+}
+
 .movie-cell {
     -fx-background-color: black;
     -fx-padding: 2;

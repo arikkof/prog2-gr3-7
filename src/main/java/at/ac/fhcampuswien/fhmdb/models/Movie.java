@@ -43,7 +43,6 @@ public class Movie {
         movies.add(new Movie("The Wolf of Wall Street",
                 "Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.",
                 Arrays.asList(Genre.DRAMA, Genre.ROMANCE, Genre.BIOGRAPHY)));
-        // TODO add some dummy data here
 
         return movies;
     }
