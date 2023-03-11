@@ -47,4 +47,9 @@ public class Movie {
 
         return movies;
     }
+
+    public List<Genre> getGenres(){
+        return genres;
+    }
+
 }
