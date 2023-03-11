@@ -12,12 +12,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-
+import javafx.collections.transformation.FilteredList;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+
+import at.ac.fhcampuswien.fhmdb.services.FilterService;
 
 public class HomeController implements Initializable {
     @FXML
@@ -27,12 +28,12 @@ public class HomeController implements Initializable {
     public TextField searchField;
 
     @FXML
-    public JFXListView movieListView;
+    public JFXListView<Movie> movieListView;
 
     public SortState sortState = SortState.NONE;
 
     @FXML
-    public JFXComboBox genreComboBox;
+    public JFXComboBox<Genre> genreComboBox;
 
     @FXML
     public JFXButton sortBtn;
@@ -41,12 +42,14 @@ public class HomeController implements Initializable {
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
+    private final FilteredList<Movie> movieFilteredList = new FilteredList<>(observableMovies);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeState();
+        observableMovies.addAll(allMovies);
 
         // initialize UI stuff
-        movieListView.setItems(observableMovies);   // set data of observable list to list view
+        movieListView.setItems(movieFilteredList);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
         // add genre filter items
@@ -69,9 +72,11 @@ public class HomeController implements Initializable {
             }
         });
 
+
+
     }
-    public void initializeState(){
-        observableMovies.clear();
-        observableMovies.addAll(allMovies);
+
+    public void selectGenre() {
+        FilterService.selectGenre(genreComboBox.getValue(), movieFilteredList);
     }
 }
