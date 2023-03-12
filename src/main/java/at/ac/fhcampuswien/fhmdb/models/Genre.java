@@ -17,7 +17,7 @@ public enum Genre {
     MUSICAL,
     MYSTERY,
     ROMANCE,
-    SCIENCE_FICTION,
+    SCIFI,
     SPORT,
     THRILLER,
     WAR,
