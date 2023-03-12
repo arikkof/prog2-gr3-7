@@ -22,6 +22,7 @@ public class MovieCell extends ListCell<Movie> {
 
         if (empty || movie == null) {
             setText(null);
+            // !!! FIX of bug displaying obsolete movies:
             setGraphic(null);
         } else {
             this.getStyleClass().add("movie-cell");
