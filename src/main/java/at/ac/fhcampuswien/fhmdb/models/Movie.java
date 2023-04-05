@@ -20,6 +20,7 @@ public class Movie {
     private final List<String> mainCast = new ArrayList<>();
     private final double rating;
 
+    // we are maintaining this constructor for compatibility with our dummy data for tests
     public Movie(String title, String description, List<Genre> genres) {
         this.title = title;
         this.description = description;
@@ -68,7 +69,7 @@ public class Movie {
         return genres;
     }
 
-    public static List<Movie> initializeMovies(){
+    public static List<Movie> initializeMovies(){ // Dummy Data
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie("Life Is Beautiful",
                 "When an open-minden Jewish librarian and his son become victims of the Holocaust, he uses a perfect mixture of will, humor and imagination to protect " +
