@@ -5,22 +5,67 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Movie {
+
+
+
+    private final String id;
     private String title;
     private String description;
     private List<Genre> genres;
+    private final int releaseYear;
+    private final String imgUrl;
+    private final int lengthInMinutes;
+    private final List<String> directors = new ArrayList<>();
+    private final List<String> writers = new ArrayList<>();
+    private final List<String> mainCast = new ArrayList<>();
+    private final double rating;
 
     public Movie(String title, String description, List<Genre> genres) {
         this.title = title;
         this.description = description;
         this.genres = genres;
+        // put in empty dummy data for variables that are not in the constructor arguments but in the object
+        this.id = null;
+        this.releaseYear = 0;
+        this.imgUrl = "";
+        this.lengthInMinutes = 0;
+        this.rating = 0;
     }
 
+    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast, double rating) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.genres = genres;
+        this.releaseYear = releaseYear;
+        this.imgUrl = imgUrl;
+        this.lengthInMinutes = lengthInMinutes;
+        this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) {
+            return false;
+        }
+        if(obj == this) {
+            return true;
+        }
+        if(!(obj instanceof Movie other)) {
+            return false;
+        }
+        return this.title.equals(other.title) && this.description.equals(other.description) && this.genres.equals(other.genres);
+    }
     public String getTitle() {
         return title;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public List<Genre> getGenres(){
+        return genres;
     }
 
     public static List<Movie> initializeMovies(){
@@ -75,8 +120,36 @@ public class Movie {
         return movies;
     }
 
-    public List<Genre> getGenres(){
-        return genres;
+    public String getId() {
+        return id;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public int getLengthInMinutes() {
+        return lengthInMinutes;
+    }
+
+    public List<String> getDirectors() {
+        return directors;
+    }
+
+    public List<String> getWriters() {
+        return writers;
+    }
+
+    public List<String> getMainCast() {
+        return mainCast;
+    }
+
+    public double getRating() {
+        return rating;
     }
 
 }
