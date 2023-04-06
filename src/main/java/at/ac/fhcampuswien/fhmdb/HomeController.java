@@ -11,14 +11,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.collections.transformation.FilteredList;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
@@ -32,15 +30,14 @@ public class HomeController implements Initializable {
     public JFXListView<Movie> movieListView;
 
     //public SortState sortState = SortState.NONE;
-    // TODO: implement "ALL" option for releaseYearComboBox and ratingComboBox (how?) AND for genreComboBox, too
-    // TODO: keep List of currently displayed movies, only show remaining relevant options in other comboBoxes
-    // TODO: show all parameters of a Movie in MovieCell
+
+    // TODO: keep List of currently displayed movies(observableMovies), only show remaining relevant options in other comboBoxes
     @FXML
     public JFXComboBox<Genre> genreComboBox;
     @FXML
-    public JFXComboBox<Integer> releaseYearComboBox;
+    public JFXComboBox<String> releaseYearComboBox;
     @FXML
-    public JFXComboBox<Double> ratingComboBox;
+    public JFXComboBox<String> ratingComboBox;
 
     @FXML
     public JFXButton sortBtn;
@@ -48,6 +45,12 @@ public class HomeController implements Initializable {
     public List<Movie> allMovies;
 
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+
+
+    public final ObservableList<Genre> observableGenres = FXCollections.observableArrayList();
+    public final ObservableList<String> observableReleaseYears = FXCollections.observableArrayList();
+    public final ObservableList<String> observableRatings = FXCollections.observableArrayList();
+
     // FilteredList: also an Observable (updates automagically)
     private final FilteredList<Movie> movieFilteredList = new FilteredList<>(observableMovies);
 
@@ -89,20 +92,56 @@ public class HomeController implements Initializable {
 
     public void initializeLayout(){
         // initialize UI stuff
-        movieListView.setItems(movieFilteredList);   // set data of filtered list to list view
+        movieListView.setItems(observableMovies);   // set data of filtered list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
-        // add genre filter items
         genreComboBox.setPromptText("Filter by Genre");
-        genreComboBox.getItems().addAll(Genre.values());
-        // add releaseYear filter items
         releaseYearComboBox.setPromptText("Filter by Release Year");
-        allMovies.stream().map(Movie::getReleaseYear).distinct().sorted().forEach(releaseYearComboBox.getItems()::add);
-        // add rating filter items
         ratingComboBox.setPromptText("Filter by Rating");
-        allMovies.stream().map(Movie::getRating).distinct().sorted().forEach(ratingComboBox.getItems()::add);
+        updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
     }
 
-    public void updateFilteredMovies(String keyword, Genre genre, Integer releaseYear, Double rating) {
+    public void clearCombobox(ComboBox comboBox){
+        comboBox.getItems().clear();
+    }
+    public void updateLayout(Genre genre, String releaseYear, String rating){
+        // add genre filter items
+        clearCombobox(genreComboBox);
+        clearCombobox(releaseYearComboBox);
+        clearCombobox(ratingComboBox);
+
+        genreComboBox.setValue(genre);
+        releaseYearComboBox.setValue(releaseYear);
+        ratingComboBox.setValue(rating);
+
+        genreComboBox.getItems().add(Genre.ALL);
+        getCurrentGenres(observableMovies).stream().distinct().forEach(genreComboBox.getItems()::add);
+        //observableMovies.stream().map(Movie::getGenres).forEach(l -> {l.stream().distinct().sorted().forEach(e -> genreComboBox.getItems().addAll(e));});
+        //genreComboBox.getItems().addAll(Genre.values());
+        // add releaseYear filter items
+        releaseYearComboBox.getItems().add("ALL");
+        getCurrentReleaseYears(observableMovies).stream().distinct().sorted().map(Object::toString).forEach(releaseYearComboBox.getItems()::add);
+        // add rating filter items
+        ratingComboBox.getItems().add("ALL");
+        getCurrentRatings(observableMovies).stream().distinct().sorted().map(Object::toString).forEach(ratingComboBox.getItems()::add);
+    }
+
+    public List<Genre> getCurrentGenres(List<Movie> currentMovies){
+        List<Genre> result = currentMovies.stream().map(Movie::getGenres).flatMap(List::stream).toList();
+        System.out.println(result);
+        return result;
+    }
+
+    public List<Integer> getCurrentReleaseYears(List<Movie> currentMovies){
+        return currentMovies.stream().map(Movie::getReleaseYear).toList();
+    }
+
+    public List<Double> getCurrentRatings(List<Movie> currentMovies){
+        return currentMovies.stream().map(Movie::getRating).toList();
+    }
+
+
+
+    public void updateFilteredMovies(String keyword, Genre genre, String releaseYear, String rating) {
         // create 2 intermediary Lists and 1 final
 //        List<Movie> movieListFilteredByGenre = new ArrayList<>();
 //        List<Movie> movieListFilteredByKeyword = new ArrayList<>();
@@ -129,12 +168,13 @@ public class HomeController implements Initializable {
 //                }
 //            }
 //        }
-        String releaseYearString=null;
-        String ratingString=null;
-        if(releaseYear!=null){releaseYearString=releaseYear.toString();};
-        if(rating!=null){ratingString=rating.toString();}
+
+        if(genre == Genre.ALL) genre = null;
+        if(Objects.equals(releaseYear, "ALL") || Objects.equals(releaseYear, "")) releaseYear = null;
+        if(Objects.equals(rating, "ALL") || Objects.equals(rating, "")) rating = null;
         observableMovies.clear();
-        observableMovies.addAll(MovieAPI.getMovies(keyword, genre, releaseYearString, ratingString));
+        observableMovies.addAll(MovieAPI.getMovies(keyword, genre, releaseYear, rating));
+        updateLayout(genre, releaseYear, rating);
         // alternatively: use observable List directly but clear first
         // set Predicate of filtered List: for all movies from final (result) list that are contained in movieFilteredList
         // movieFilteredList.setPredicate(movieListFilteredResult::contains);
