@@ -69,7 +69,8 @@ public class Movie {
         return genres;
     }
 
-    public static List<Movie> initializeMovies(){ // Dummy Data
+    // Dummy Data
+    public static List<Movie> initializeMovies(){
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie("Life Is Beautiful",
                 "When an open-minden Jewish librarian and his son become victims of the Holocaust, he uses a perfect mixture of will, humor and imagination to protect " +

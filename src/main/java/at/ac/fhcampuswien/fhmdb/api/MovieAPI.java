@@ -7,12 +7,16 @@ import java.util.Arrays;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 
-import okhttp3.*; // library for http responses and requests
-import com.google.gson.Gson; // from JSON to Java Object and back
+// library for http responses and requests
+import okhttp3.*;
+// from JSON to Java Object and back
+import com.google.gson.Gson;
 
 // sample request URL: http://localhost:8080/movies?genre=COMEDY&releaseYear=2000
+// fh-server API URL: "https://prog2.fh-campuswien.ac.at/movies"
+// local API URL: "http://localhost:8080/movies"
 public class MovieAPI {
-    private static final String URL = "http://localhost:8080/movies";// API URL
+    private static final String URL = "https://prog2.fh-campuswien.ac.at/movies";
     private static final String DELIMITER = "&";
     // create request
     private static String buildUrl(String query, Genre genre, String releaseYear, String ratingFrom){
@@ -36,13 +40,11 @@ public class MovieAPI {
     }
 
     // create Movie Objects from http response (json) and return in Array
-
     public static List<Movie> getAllMovies(){
         return getMovies(null, null, null, null);
     }
     public static List<Movie> getMovies(String query, Genre genre, String releaseYear, String ratingFrom){
         String url = buildUrl(query, genre, releaseYear, ratingFrom);
-        System.out.println(url);
         Request request = new Request.Builder()
                 .url(url)
                 .removeHeader("User-Agent")
@@ -51,15 +53,14 @@ public class MovieAPI {
 
         OkHttpClient client = new OkHttpClient();
         try (Response response = client.newCall(request).execute()){
+            assert response.body() != null;
             String responseBody = response.body().string();
-            System.out.println(responseBody);
             Gson gson = new Gson();
             Movie[] movies = gson.fromJson(responseBody, Movie[].class);
-            System.out.println("Hi, try worked");
             return Arrays.asList(movies);
         }
         catch (Exception e){
-            System.err.println(e.getMessage() + "We are here.... ");
+            System.err.println(e.getMessage());
         }
         return new ArrayList<>();
     }
