@@ -54,8 +54,9 @@ public class HomeController implements Initializable {
             System.out.println(getLongestMovieTitle(allMovies));
             System.out.println("MAX NUMBER MOVIES OF DIRECTOR");
             System.out.println(countMoviesFrom(allMovies, "Steven Spielberg"));
-            System.out.println("MOVIES BETWEEN A SPECIFIC YEAR");
-            System.out.println(getMoviesBetweenYears(allMovies,1990,2000));
+            System.out.println("MOVIES BETWEEN YEARS 1990 and 2000");
+            //System.out.println(getMoviesBetweenYears(allMovies,1990,2000));
+            getMoviesBetweenYears(allMovies,1990,2000).stream().forEach(m -> System.out.println(m.getTitle()));
         });
         // Search Field Event Handler (Listener)
         searchField.setOnKeyTyped(actionEvent -> {
@@ -133,7 +134,6 @@ public class HomeController implements Initializable {
         observableMovies.clear();
         observableMovies.addAll(MovieAPI.getMovies(keyword, genre, releaseYear, rating));
     }
-    // @TODO: implement these methods with Streams
         public String getMostPopularActor(List<Movie> movies) {
             Map<String, Long> actorCountMap = movies.stream()
                     .flatMap(movie -> movie.getMainCast().stream())
