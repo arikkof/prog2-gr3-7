@@ -46,6 +46,7 @@ public class HomeController implements Initializable {
         // Filter Button Event Handler (Event Listener)
         filterButton.setOnAction(actionEvent -> {
             updateFilteredMovies(searchField.getText().trim().toLowerCase(), genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
+            updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
            // Console Output for Testing
             System.out.println("MOST POPULAR ACTOR");
             System.out.println(getMostPopularActor(allMovies));
