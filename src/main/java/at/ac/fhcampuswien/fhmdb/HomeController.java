@@ -15,6 +15,8 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
     @FXML
@@ -45,6 +47,15 @@ public class HomeController implements Initializable {
         filterButton.setOnAction(actionEvent -> {
             updateFilteredMovies(searchField.getText().trim().toLowerCase(), genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
             updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
+           // Console Output for Testing
+            System.out.println("MOST POPULAR ACTOR");
+            System.out.println(getMostPopularActor(allMovies));
+            System.out.println("LONGEST MOVIE TITLE");
+            System.out.println(getLongestMovieTitle(allMovies));
+            System.out.println("MAX NUMBER MOVIES OF DIRECTOR");
+            System.out.println(countMoviesFrom(allMovies, "Steven Spielberg"));
+            System.out.println("MOVIES BETWEEN A SPECIFIC YEAR");
+            System.out.println(getMoviesBetweenYears(allMovies,1990,2000));
         });
         // Search Field Event Handler (Listener)
         searchField.setOnKeyTyped(actionEvent -> {
@@ -123,14 +134,35 @@ public class HomeController implements Initializable {
         observableMovies.addAll(MovieAPI.getMovies(keyword, genre, releaseYear, rating));
     }
     // @TODO: implement these methods with Streams
-    String getMostPopularActor(List<Movie> movies){ return new String(); }
-    int getLongestMovieTitle(List<Movie> movies){ return 0; }
-    public long countMoviesFrom(List<Movie> movies, String director) {
-        var result = movies.stream()
-                .filter(movie -> movie.getDirectors().contains(director))
-                .count();
+        public String getMostPopularActor(List<Movie> movies) {
+            Map<String, Long> actorCountMap = movies.stream()
+                    .flatMap(movie -> movie.getMainCast().stream())
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            if (actorCountMap.isEmpty()) {
+                return null;
+            }
+
+            Optional<Map.Entry<String, Long>> mostFrequentActor = actorCountMap.entrySet().stream()
+                    .max(Map.Entry.comparingByValue());
+
+            return mostFrequentActor.get().getKey();
+        }
+        int getLongestMovieTitle(List<Movie> movies){
+            return movies.stream()
+                .mapToInt(movie -> movie.getTitle().length())
+                .max()
+                .orElse(0);
+    }
+        public long countMoviesFrom(List<Movie> movies, String director) {
+            var result = movies.stream()
+                    .filter(movie -> movie.getDirectors().contains(director))
+                    .count();
         return result;
     }
-  //  List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear){ List<Movie> moviesF = new List<Movie>; return moviesF; };
-
+        List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear){
+            return movies.stream()
+                    .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
+                    .collect(Collectors.toList());
+    }
 }
