@@ -5,8 +5,12 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-
 import java.sql.SQLException;
+
+// wozu:
+// establish connection zu DB
+// user / pwd
+// DAO: translates to and from SQL (provided by ORMLite), DAO.queryForAll()
 
 public class DatabaseManager {
     public static final String DB_URL = "jdbc:h2:file: ./db/watchlistmoviesdb";
@@ -45,8 +49,9 @@ public class DatabaseManager {
         connectionSource = new JdbcConnectionSource(DB_URL, username, password);
     }
     public void testDB() throws SQLException {
-        WatchlistMovieEntity movie = new WatchlistMovieEntity("100", "The Box", "A box..", "Action, Horror", 2023, "https://www.fhcampuswien.ac.at", 112, 100);
-        dao.create(movie);
+        WatchlistMovieEntity movie666 = new WatchlistMovieEntity("100", "The Box", "A box..", "Action, Horror", 2023, "https://www.fhcampuswien.ac.at", 112, 100);
+
+        dao.create(movie666);
     }
 
 }

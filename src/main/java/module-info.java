@@ -14,5 +14,5 @@ module at.ac.fhcampuswien.fhmdb {
 
     requires ormlite.jdbc;
     requires java.sql;
-    opens at.ac.fhcampuswien.fhmdb.database to ormlite.jbdc;
+    opens at.ac.fhcampuswien.fhmdb.database to ormlite.jdbc;
 }

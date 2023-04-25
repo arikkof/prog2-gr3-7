@@ -3,10 +3,10 @@ package at.ac.fhcampuswien.fhmdb.database;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import java.util.List;
 
-// Representation of table entry
+// Mapper Klasse: Von Movie zu WatchlistMovieEntity (keine Listen)
+// Representation of table entry - One single entry in the database
 // naming convention: ...Entity
 // create Tables and Fields with Annotations
 @DatabaseTable(tableName = "watchlistMovie")
