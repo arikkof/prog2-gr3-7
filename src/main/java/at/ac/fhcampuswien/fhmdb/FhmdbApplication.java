@@ -1,6 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
-import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
+import at.ac.fhcampuswien.fhmdb.data.DatabaseManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

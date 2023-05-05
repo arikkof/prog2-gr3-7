@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb.database;
+package at.ac.fhcampuswien.fhmdb.data;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -11,25 +11,23 @@ import java.sql.SQLException;
 // establish connection zu DB
 // user / pwd
 // DAO: translates to and from SQL (provided by ORMLite), DAO.queryForAll()
-
 public class DatabaseManager {
-    public static final String DB_URL = "jdbc:h2:file: ./db/watchlistmoviesdb";
+    public static final String DB_URL = "jdbc:h2: ./db/watchlistmoviesdb"; // "jdbc:h2:file: ./db/moveidb";
     public static final String username = "user";
-    public static final String password = "password";
+    public static final String password = "pw";
     private static ConnectionSource connectionSource;
     // Data Access Object:
     // provides crud
     Dao<WatchlistMovieEntity, Long> dao;
     private static DatabaseManager instance;
 
-    // private Constructor
     private DatabaseManager() {
         try {
             createConnectionSource();
             dao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
             createTables();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -41,17 +39,24 @@ public class DatabaseManager {
         return instance;
     }
 
-    private static void createTables() throws SQLException {
+    void createConnectionSource() throws SQLException {
+        connectionSource = new JdbcConnectionSource(DB_URL, username, password);
+    }
+
+    ConnectionSource getConnectionSource() {
+        return connectionSource;
+    }
+
+    void createTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
     }
 
-    private static void createConnectionSource() throws SQLException {
-        connectionSource = new JdbcConnectionSource(DB_URL, username, password);
-    }
-    public void testDB() throws SQLException {
-        WatchlistMovieEntity movie666 = new WatchlistMovieEntity("100", "The Box", "A box..", "Action, Horror", 2023, "https://www.fhcampuswien.ac.at", 112, 100);
+    //WatchlistDao getWatchlistDao() {}
 
-        dao.create(movie666);
+    public void testDB() throws SQLException {
+        WatchlistMovieEntity watchlistMovie = new WatchlistMovieEntity("2", "title", "description", "genres", 2000, "url", 100, 8);
+        dao.create(watchlistMovie);
+        System.out.println(watchlistMovie);
     }
 
 }
