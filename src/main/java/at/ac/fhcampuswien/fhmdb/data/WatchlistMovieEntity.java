@@ -5,33 +5,37 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
-@DatabaseTable(tableName = "Movies")
+
+// Mapper Klasse: Von Movie zu WatchlistMovieEntity (keine Listen)
+// Representation of table entry - One single entry in the database
+// naming convention: ...Entity
+// create Tables and Fields with Annotations
+@DatabaseTable(tableName = "watchlistMovie")
 public class WatchlistMovieEntity {
 
-    @DatabaseField
-    long id;
-    @DatabaseField
-    String apiId;
-    @DatabaseField
-    String title;
-    @DatabaseField
-    String description;
-    @DatabaseField
-    String genres;
-    @DatabaseField
-    int releaseYear;
-    @DatabaseField
-    String imgUrl;
-    @DatabaseField
-    int lengthInMinutes;
-    @DatabaseField
-    double rating;
+    @DatabaseField(generatedId = true) // generate ID automagically!
+    private long id; // Long ?
+    @DatabaseField()
+    private String apiId;
+    @DatabaseField()
+    private String title;
+    @DatabaseField()
+    private String description;
+    @DatabaseField()
+    private String genres;
+    @DatabaseField()
+    private int releaseYear;
+    @DatabaseField()
+    private String imgUrl;
+    @DatabaseField()
+    private int lengthInMinutes;
+    @DatabaseField()
+    private double rating;
 
     public WatchlistMovieEntity() {
     }
 
-    public WatchlistMovieEntity(long id, String apiId, String title, String description, String genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
-        this.id = id;
+    public WatchlistMovieEntity(String apiId, String title, String description, String genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
         this.apiId = apiId;
         this.title = title;
         this.description = description;
@@ -42,7 +46,7 @@ public class WatchlistMovieEntity {
         this.rating = rating;
     }
 
-    String genresToString(List<Genre> genres){
+    /*private String genresToString(List<Genre> genres){
         return new String();
-    }
+    }*/
 }

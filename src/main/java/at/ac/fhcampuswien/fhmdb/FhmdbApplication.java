@@ -1,6 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
-import at.ac.fhcampuswien.fhmdb.data.Database;
+import at.ac.fhcampuswien.fhmdb.data.DatabaseManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +21,7 @@ public class FhmdbApplication extends Application {
         stage.show();
 
         try {
-            Database.getDatabase().testDB();
+            DatabaseManager.getDatabase().testDB();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

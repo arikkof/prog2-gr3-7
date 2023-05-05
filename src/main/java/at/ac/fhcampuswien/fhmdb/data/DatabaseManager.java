@@ -5,18 +5,23 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-
 import java.sql.SQLException;
 
-public class Database {
-    String DB_URL = "jdbc:h2: ./db/moviedb";
-    String username = "user";
-    String password = "pw";
-    ConnectionSource connectionSource;
+// wozu:
+// establish connection zu DB
+// user / pwd
+// DAO: translates to and from SQL (provided by ORMLite), DAO.queryForAll()
+public class DatabaseManager {
+    public static final String DB_URL = "jdbc:h2: ./db/watchlistmoviesdb"; // "jdbc:h2:file: ./db/moveidb";
+    public static final String username = "user";
+    public static final String password = "pw";
+    private static ConnectionSource connectionSource;
+    // Data Access Object:
+    // provides crud
     Dao<WatchlistMovieEntity, Long> dao;
-    private static Database instance;
+    private static DatabaseManager instance;
 
-    private Database() {
+    private DatabaseManager() {
         try {
             createConnectionSource();
             dao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
@@ -26,10 +31,11 @@ public class Database {
         }
     }
 
-    public static Database getDatabase() {
+    public static DatabaseManager getDatabase() {
         if (instance == null) {
-            instance = new Database();
+            instance = new DatabaseManager();
         }
+        // if instance already exists just return it
         return instance;
     }
 
@@ -48,7 +54,7 @@ public class Database {
     //WatchlistDao getWatchlistDao() {}
 
     public void testDB() throws SQLException {
-        WatchlistMovieEntity watchlistMovie = new WatchlistMovieEntity(1, "2", "title", "description", "genres", 2000, "url", 100, 8);
+        WatchlistMovieEntity watchlistMovie = new WatchlistMovieEntity("2", "title", "description", "genres", 2000, "url", 100, 8);
         dao.create(watchlistMovie);
         System.out.println(watchlistMovie);
     }
