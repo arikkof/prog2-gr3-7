@@ -17,5 +17,7 @@ module at.ac.fhcampuswien.fhmdb {
     opens at.ac.fhcampuswien.fhmdb.data to ormlite.jdbc;
     requires com.h2database;
     exports at.ac.fhcampuswien.fhmdb.data;
+    exports at.ac.fhcampuswien.fhmdb.contoller;
+    opens at.ac.fhcampuswien.fhmdb.contoller to javafx.fxml;
 
 }

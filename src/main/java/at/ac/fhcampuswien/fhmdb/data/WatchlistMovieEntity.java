@@ -9,7 +9,7 @@ import java.util.List;
 // Mapper Klasse: Von Movie zu WatchlistMovieEntity (keine Listen)
 // Representation of table entry - One single entry in the database
 // naming convention: ...Entity
-// create Tables and Fields with Annotations
+// create Table and Fields with Annotations
 @DatabaseTable(tableName = "watchlistMovie")
 public class WatchlistMovieEntity {
 
@@ -22,7 +22,7 @@ public class WatchlistMovieEntity {
     @DatabaseField()
     private String description;
     @DatabaseField()
-    private String genres;
+    private String genres; //TODO: save String containing Genres here
     @DatabaseField()
     private int releaseYear;
     @DatabaseField()
@@ -46,7 +46,9 @@ public class WatchlistMovieEntity {
         this.rating = rating;
     }
 
-    /*private String genresToString(List<Genre> genres){
+    //TODO: implement method to return a String from a List of Genres
+    private String genresToString(List<Genre> genres){
+        StringBuilder stringBuilder = new StringBuilder();
         return new String();
-    }*/
+    }
 }
