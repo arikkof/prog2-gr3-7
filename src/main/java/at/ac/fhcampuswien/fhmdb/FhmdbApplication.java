@@ -19,12 +19,13 @@ public class FhmdbApplication extends Application {
         stage.setTitle("FHMDb");
         stage.setScene(scene);
         stage.show();
+
         try {
             DatabaseManager.getDatabase().testDB();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
+
     }
 
     public static void main(String[] args) {
