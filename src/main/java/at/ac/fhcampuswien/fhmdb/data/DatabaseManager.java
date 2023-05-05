@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class DatabaseManager {
     public static final String DB_URL = "jdbc:h2: ./db/watchlistmoviesdb"; // "jdbc:h2:file: ./db/moveidb";
     public static final String username = "user";
-    public static final String password = "pw";
+    public static final String password = "password";
     private static ConnectionSource connectionSource;
     // Data Access Object:
     // provides crud

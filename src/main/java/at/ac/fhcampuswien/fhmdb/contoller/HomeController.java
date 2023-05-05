@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb;
+package at.ac.fhcampuswien.fhmdb.contoller;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
@@ -13,11 +13,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
+//TODO: Handle DatabaseExceptions here (show Message via UI)
 public class HomeController implements Initializable {
     @FXML
     public JFXButton filterButton;
@@ -33,6 +34,8 @@ public class HomeController implements Initializable {
     public JFXComboBox<String> ratingComboBox;
     @FXML
     public JFXButton sortBtn;
+    @FXML
+    public JFXButton watchlistButton;
     public List<Movie> allMovies;
     // Observable List: automatically updates corresponding UI elements when underlying data changes
     public final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
@@ -73,6 +76,13 @@ public class HomeController implements Initializable {
                 observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
                 //sortState = SortState.DESCENDING;
                 sortBtn.setText("Sort (asc)");
+            }
+        });
+        watchlistButton.setOnAction(actionEvent -> {
+            try {
+                ScreenController.switchToWatchlistView();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }
