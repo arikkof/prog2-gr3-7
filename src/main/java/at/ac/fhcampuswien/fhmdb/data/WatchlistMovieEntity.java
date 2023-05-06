@@ -46,9 +46,16 @@ public class WatchlistMovieEntity {
         this.rating = rating;
     }
 
-    //TODO: implement method to return a String from a List of Genres
+
     private String genresToString(List<Genre> genres){
         StringBuilder stringBuilder = new StringBuilder();
-        return new String();
+        for (int i = 0; i < genres.size(); i++) {
+            stringBuilder.append(genres.get(i));
+            if (i < genres.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
     }
 }
+
