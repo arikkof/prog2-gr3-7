@@ -46,7 +46,14 @@ public class WatchlistMovieEntity {
         this.rating = rating;
     }
 
-    /*private String genresToString(List<Genre> genres){
-        return new String();
-    }*/
+    private String genresToString(List<Genre> genres){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < genres.size(); i++) {
+            stringBuilder.append(genres.get(i));
+            if (i < genres.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        return stringBuilder.toString();
+    }
 }
