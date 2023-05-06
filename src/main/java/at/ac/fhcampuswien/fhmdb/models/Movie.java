@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
+import at.ac.fhcampuswien.fhmdb.data.WatchlistMovieEntity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +33,16 @@ public class Movie {
         this.imgUrl = "";
         this.lengthInMinutes = 0;
         this.rating = 0;
+    }
+    public Movie(WatchlistMovieEntity watchlistMovieEntity){
+        this.id = watchlistMovieEntity.getApiId();
+        this.title = watchlistMovieEntity.getTitle();
+        this.description = watchlistMovieEntity.getDescription();
+        // genres
+        this.releaseYear = watchlistMovieEntity.getReleaseYear();
+        this.imgUrl = watchlistMovieEntity.getImgUrl();
+        this.lengthInMinutes = watchlistMovieEntity.getLengthInMinutes();
+        this.rating = watchlistMovieEntity.getRating();
     }
 
     public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, List<String> directors, List<String> writers, List<String> mainCast, double rating) {

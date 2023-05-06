@@ -1,9 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.data;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
+import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import java.util.List;
 
 // Mapper Klasse: Von Movie zu WatchlistMovieEntity (keine Listen)
@@ -12,7 +12,6 @@ import java.util.List;
 // create Table and Fields with Annotations
 @DatabaseTable(tableName = "watchlistMovie")
 public class WatchlistMovieEntity {
-
     @DatabaseField(generatedId = true) // generate ID automagically!
     private long id; // Long ?
     @DatabaseField()
@@ -31,10 +30,17 @@ public class WatchlistMovieEntity {
     private int lengthInMinutes;
     @DatabaseField()
     private double rating;
-
-    public WatchlistMovieEntity() {
+    public WatchlistMovieEntity(){}
+    public WatchlistMovieEntity(Movie movie) {
+        this.apiId = movie.getId();
+        this.title = movie.getTitle();
+        this.description = movie.getDescription();
+        this.genres = genresToString(movie.getGenres());
+        this.releaseYear = movie.getReleaseYear();
+        this.imgUrl = movie.getImgUrl();
+        this.lengthInMinutes = movie.getLengthInMinutes();
+        this.rating = movie.getRating();
     }
-
     public WatchlistMovieEntity(String apiId, String title, String description, String genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
         this.apiId = apiId;
         this.title = title;
@@ -45,8 +51,6 @@ public class WatchlistMovieEntity {
         this.lengthInMinutes = lengthInMinutes;
         this.rating = rating;
     }
-
-
     private String genresToString(List<Genre> genres){
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < genres.size(); i++) {
@@ -56,6 +60,42 @@ public class WatchlistMovieEntity {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getGenres() {
+        return genres;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public int getLengthInMinutes() {
+        return lengthInMinutes;
+    }
+
+    public double getRating() {
+        return rating;
     }
 }
 
