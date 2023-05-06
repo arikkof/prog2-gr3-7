@@ -1,4 +1,4 @@
 package at.ac.fhcampuswien.fhmdb.exceptions;
 
-public class MovieApiException {
+public class MovieApiException extends Exception{
 }
