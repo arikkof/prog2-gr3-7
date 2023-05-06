@@ -7,30 +7,31 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
-// wozu:
-// establish connection zu DB
-// user / pwd
-// DAO: translates to and from SQL (provided by ORMLite), DAO.queryForAll()
+// establish connection to DB
+// DAO inside
 public class DatabaseManager {
-    public static final String DB_URL = "jdbc:h2: ./db/watchlistmoviesdb"; // "jdbc:h2:file: ./db/moveidb";
-    public static final String username = "user";
-    public static final String password = "password";
+    private static final String DB_URL = "jdbc:h2:file:./db/watchlistmoviesdb";
+    private static final String username = "user";
+    private static final String password = "password";
     private static ConnectionSource connectionSource;
-    // Data Access Object:
-    // provides crud
-    Dao<WatchlistMovieEntity, Long> dao;
+    /*
+    Data Access Object:
+    provides crud, translates to and from SQL (provided by ORMLite)
+    Instantiate with 2 generic types, here WatchlistMovieEntity and Long (for ID)
+    */
+    private Dao<WatchlistMovieEntity, Long> dao;
     private static DatabaseManager instance;
-
+    // private Constructor
     private DatabaseManager() {
         try {
             createConnectionSource();
-            dao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
+            this.dao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
             createTables();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-
+    // use to retrieve DatabaseManager: instantiate with private constructor if !exists
     public static DatabaseManager getDatabase() {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -38,25 +39,23 @@ public class DatabaseManager {
         // if instance already exists just return it
         return instance;
     }
-
-    void createConnectionSource() throws SQLException {
+    private void createConnectionSource() throws SQLException {
         connectionSource = new JdbcConnectionSource(DB_URL, username, password);
     }
-
-    ConnectionSource getConnectionSource() {
+    public static ConnectionSource getConnectionSource() {
         return connectionSource;
     }
-
-    void createTables() throws SQLException {
+    public Dao<WatchlistMovieEntity, Long> getDao() {
+        return dao;
+    }
+    private void createTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
     }
 
-    //WatchlistDao getWatchlistDao() {}
-
     public void testDB() throws SQLException {
-        WatchlistMovieEntity watchlistMovie = new WatchlistMovieEntity("2", "title", "description", "genres", 2000, "url", 100, 8);
+        /*WatchlistMovieEntity watchlistMovie = new WatchlistMovieEntity("2", "title", "description", "genres", 2000, "url", 100, 8);
         dao.create(watchlistMovie);
-        System.out.println(watchlistMovie);
+        System.out.println(watchlistMovie);*/
     }
 
 }
