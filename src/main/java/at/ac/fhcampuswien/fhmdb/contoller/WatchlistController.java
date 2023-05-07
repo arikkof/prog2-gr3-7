@@ -12,6 +12,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,12 +38,11 @@ public class WatchlistController implements Initializable {
         initializeBehaviour();
     }
     public void initializeState(){
-        //TODO: get movies from DB, parse and set to allMovies
-        watchlistRepository = new WatchlistRepository();
         try {
+            watchlistRepository = new WatchlistRepository();
             allMovies = watchlistRepository.getDao().queryForAll().stream().map(Movie::new).collect(Collectors.toList());
-        } catch (SQLException e) {
-            // pass Warning to UI
+        } catch (SQLException | DatabaseException e) {
+
         }
         observableWatchlistMovies.clear();
         observableWatchlistMovies.addAll(allMovies);
@@ -52,20 +53,20 @@ public class WatchlistController implements Initializable {
     }
     public void initializeBehaviour(){
         homeViewButton.setOnAction(actionEvent -> {
-            try {
-                ScreenController.switchToHomeView();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ScreenController.switchToHomeView();
         });
     }
    private final ClickEventHandler<Movie> onRemoveFromWatchlistClicked = (clickedMovie) ->
     {
-        System.out.println("Remove from Watchlist clicked on movie: " + clickedMovie);
+        System.out.println("Remove from Watchlist clicked on movie: " + clickedMovie.getTitle());
         try {
             watchlistRepository.removeFromWatchlist(new WatchlistMovieEntity(clickedMovie));
+            ScreenController.switchToWatchlistView();
         } catch (DatabaseException e) {
-            // pass error message to UI
+            Alert a = new Alert(Alert.AlertType.ERROR, "Failed to remove movie.", ButtonType.OK);
+            a.setHeaderText("Error");
+            a.setTitle("Error");
+            a.show();
         }
     };
 }

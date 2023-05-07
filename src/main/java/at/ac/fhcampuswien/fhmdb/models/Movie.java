@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static at.ac.fhcampuswien.fhmdb.models.Genre.DRAMA;
+import static at.ac.fhcampuswien.fhmdb.models.Genre.HORROR;
+
 public class Movie {
 
 
@@ -38,7 +41,7 @@ public class Movie {
         this.id = watchlistMovieEntity.getApiId();
         this.title = watchlistMovieEntity.getTitle();
         this.description = watchlistMovieEntity.getDescription();
-        // genres
+        this.genres = watchlistMovieEntity.getGenres();
         this.releaseYear = watchlistMovieEntity.getReleaseYear();
         this.imgUrl = watchlistMovieEntity.getImgUrl();
         this.lengthInMinutes = watchlistMovieEntity.getLengthInMinutes();
@@ -108,7 +111,7 @@ public class Movie {
                 Arrays.asList(Genre.BIOGRAPHY, Genre.DRAMA, Genre.HISTORY)));
         movies.add(new Movie("American Psycho",
                 "A wealthy New York City investment banking executive, Patrick Bateman, hides his alternate psychopathic ego from his co-workers and friends as he delves deeper into his violent, hedonistic fantasies.",
-                Arrays.asList(Genre.CRIME, Genre.DRAMA, Genre.HORROR)));
+                Arrays.asList(Genre.CRIME, Genre.DRAMA, HORROR)));
         movies.add(new Movie("Chicago",
                 "Two death-row murderesses develop a fierce rivalry while competing for publicity, celebrity, and a sleazy lawyer's attention.",
                 Arrays.asList(Genre.COMEDY, Genre.CRIME, Genre.MUSICAL)));
@@ -164,6 +167,16 @@ public class Movie {
 
     public double getRating() {
         return rating;
+    }
+
+    private List<Genre> stringToListOfGenres(String genresString) {
+        List<Genre> genres = new ArrayList<>();
+        String[] genreStrings = genresString.split(",");
+        for (String genreString : genreStrings) {
+            Genre genre = Genre.valueOf(genreString.trim().toUpperCase());
+            genres.add(genre);
+        }
+        return genres;
     }
 
 }
