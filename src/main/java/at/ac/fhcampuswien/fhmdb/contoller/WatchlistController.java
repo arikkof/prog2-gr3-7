@@ -12,6 +12,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +29,7 @@ public class WatchlistController implements Initializable {
     @FXML
     public JFXListView<Movie> movieListView;
     public List<Movie> allMovies;
-    public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();;
+    public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();
     private WatchlistRepository watchlistRepository;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,8 +66,12 @@ public class WatchlistController implements Initializable {
         System.out.println("Remove from Watchlist clicked on movie: " + clickedMovie);
         try {
             watchlistRepository.removeFromWatchlist(new WatchlistMovieEntity(clickedMovie));
-        } catch (DatabaseException e) {
+        } catch (Exception e) {
             // pass error message to UI
+            Alert a = new Alert(Alert.AlertType.ERROR, "Failed to remove movie.", ButtonType.OK);
+            a.setHeaderText("Error");
+            a.setTitle("Error");
+            a.show();
         }
     };
 }
