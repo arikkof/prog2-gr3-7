@@ -29,7 +29,7 @@ public class WatchlistController implements Initializable {
     @FXML
     public JFXListView<Movie> movieListView;
     public List<Movie> allMovies;
-    public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();;
+    public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();
     private WatchlistRepository watchlistRepository;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
