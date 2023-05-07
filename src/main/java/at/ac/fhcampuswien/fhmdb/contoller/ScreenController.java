@@ -16,11 +16,19 @@ public class ScreenController {
     public static void initializeStage(Stage stage){
         ScreenController.stage=stage;
     }
-    public static void switchToHomeView() throws IOException {
-        switchViews("home-view.fxml", "FHMDb");
+    public static void switchToHomeView() {
+        try {
+            switchViews("home-view.fxml", "FHMDb");
+        } catch (IOException e) {
+            System.out.println("FXML Failure");
+        }
     }
-    public static void switchToWatchlistView() throws IOException {
-        switchViews("watchlist-view.fxml", "Watchlist");
+    public static void switchToWatchlistView() {
+        try {
+            switchViews("watchlist-view.fxml", "Watchlist");
+        } catch (IOException e) {
+            System.out.println("FXML Failure");
+        }
     }
     public static void switchViews(String fxmlFileName, String Title) throws IOException {
         FXMLLoader watchlistViewFxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource(fxmlFileName));
