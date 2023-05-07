@@ -15,7 +15,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -73,7 +75,11 @@ public class HomeController implements Initializable {
         allMovies = MovieAPI.getAllMovies();
         observableMovies.clear();
         observableMovies.addAll(allMovies);
-        watchlistRepository = new WatchlistRepository();
+        try {
+            watchlistRepository = new WatchlistRepository();
+        } catch (DatabaseException e){
+
+        }
     }
 
     public void initializeLayout() {
@@ -116,11 +122,7 @@ public class HomeController implements Initializable {
             }
         });
         watchlistButton.setOnAction(actionEvent -> {
-            try {
                 ScreenController.switchToWatchlistView();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         });
     }
 
@@ -148,7 +150,10 @@ public class HomeController implements Initializable {
         try {
             watchlistRepository.addToWatchlist(new WatchlistMovieEntity(clickedMovie));
         } catch (DatabaseException e) {
-            // pass message to UI
+            Alert a = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            a.setHeaderText("Error");
+            a.setTitle("Error");
+            a.show();
         }
     };
 

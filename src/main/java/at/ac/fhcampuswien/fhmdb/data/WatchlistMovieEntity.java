@@ -1,10 +1,15 @@
 package at.ac.fhcampuswien.fhmdb.data;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // Mapper Klasse: Von Movie zu WatchlistMovieEntity (keine Listen)
 // Representation of table entry - One single entry in the database
@@ -13,7 +18,7 @@ import java.util.List;
 @DatabaseTable(tableName = "watchlistMovie")
 public class WatchlistMovieEntity {
     @DatabaseField(generatedId = true) // generate ID automagically!
-    private long id; // Long ?
+    private Long id;
     @DatabaseField()
     private String apiId;
     @DatabaseField()
@@ -21,7 +26,7 @@ public class WatchlistMovieEntity {
     @DatabaseField()
     private String description;
     @DatabaseField()
-    private String genres; //TODO: save String containing Genres here
+    private String genres;
     @DatabaseField()
     private int releaseYear;
     @DatabaseField()
@@ -30,8 +35,8 @@ public class WatchlistMovieEntity {
     private int lengthInMinutes;
     @DatabaseField()
     private double rating;
-    public WatchlistMovieEntity(){}
-    public WatchlistMovieEntity(Movie movie) {
+    public WatchlistMovieEntity(){} // ORMLite needs no args constructor
+    public WatchlistMovieEntity(Movie movie) throws DatabaseException{
         this.apiId = movie.getId();
         this.title = movie.getTitle();
         this.description = movie.getDescription();
@@ -41,17 +46,7 @@ public class WatchlistMovieEntity {
         this.lengthInMinutes = movie.getLengthInMinutes();
         this.rating = movie.getRating();
     }
-    public WatchlistMovieEntity(String apiId, String title, String description, String genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
-        this.apiId = apiId;
-        this.title = title;
-        this.description = description;
-        this.genres = genres;
-        this.releaseYear = releaseYear;
-        this.imgUrl = imgUrl;
-        this.lengthInMinutes = lengthInMinutes;
-        this.rating = rating;
-    }
-    private String genresToString(List<Genre> genres){
+    private String genresToString(List<Genre> genres) throws DatabaseException {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < genres.size(); i++) {
             stringBuilder.append(genres.get(i));
@@ -60,6 +55,14 @@ public class WatchlistMovieEntity {
             }
         }
         return stringBuilder.toString();
+    }
+    public List<Genre> getGenres() {
+        return stringToList(genres).stream()
+                .map(Genre::valueOf)
+                .collect(Collectors.toList());
+    }
+    public List<String> stringToList(String string) {
+        return new ArrayList<>(Arrays.asList(string.split(",")));
     }
 
     public long getId() {
@@ -76,10 +79,6 @@ public class WatchlistMovieEntity {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getGenres() {
-        return genres;
     }
 
     public int getReleaseYear() {
