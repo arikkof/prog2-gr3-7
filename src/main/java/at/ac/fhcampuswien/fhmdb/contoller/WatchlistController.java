@@ -39,10 +39,10 @@ public class WatchlistController implements Initializable {
     }
     public void initializeState(){
         try {
-            watchlistRepository = new WatchlistRepository();
+            watchlistRepository = WatchlistRepository.getInstance();
             allMovies = watchlistRepository.getDao().queryForAll().stream().map(Movie::new).collect(Collectors.toList());
         } catch (SQLException | DatabaseException e) {
-
+            System.out.println(e.getMessage() + e.getCause());
         }
         observableWatchlistMovies.clear();
         observableWatchlistMovies.addAll(allMovies);

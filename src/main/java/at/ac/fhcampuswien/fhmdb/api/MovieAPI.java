@@ -54,7 +54,6 @@ public class MovieAPI {
                 .appendReleaseYear(releaseYear)
                 .appendRatingFrom(ratingFrom)
                 .build();
-        System.out.println(url);
         Request request = new Request.Builder()
                 .url(url)
                 .removeHeader("User-Agent")

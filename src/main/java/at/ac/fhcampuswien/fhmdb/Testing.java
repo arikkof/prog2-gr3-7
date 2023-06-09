@@ -13,7 +13,7 @@ public class Testing {
                 .appendRatingFrom(null)
                 .build();
         System.out.println(url);
-        String test = new StringBuilder("Test").append((String)null).toString();
+        String test = new MovieAPIRequestBuilder("BASE").appendGenre(Genre.CRIME).appendQuery("WHATTT").build();
         System.out.println(test);
     }
 }

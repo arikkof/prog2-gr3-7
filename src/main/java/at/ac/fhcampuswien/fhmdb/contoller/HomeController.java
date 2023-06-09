@@ -79,7 +79,7 @@ public class HomeController implements Initializable {
         allMovies = MovieAPI.getAllMovies();
         setObservableMoviesToAllMovies();
         try {
-            watchlistRepository = new WatchlistRepository();
+            watchlistRepository = WatchlistRepository.getInstance();
         } catch (DatabaseException e){
 
         }
@@ -159,6 +159,9 @@ public class HomeController implements Initializable {
             a.setHeaderText("Error");
             a.setTitle("Error");
             a.show();
+            System.out.println("FAILUTE " + e.getMessage() + e.getCause());
+            e.printStackTrace();
+
         }
     };
 

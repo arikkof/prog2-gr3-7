@@ -27,7 +27,7 @@ public class ScreenController {
         try {
             switchViews("watchlist-view.fxml", "Watchlist");
         } catch (IOException e) {
-            System.out.println("FXML Failure");
+            System.out.println("FXML Failure in switching to Watchlist View: " + e.getMessage() + e.getCause());
         }
     }
     public static void switchViews(String fxmlFileName, String Title) throws IOException {

@@ -9,6 +9,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 // Mapper Klasse: Von Movie zu WatchlistMovieEntity (keine Listen)
@@ -58,6 +60,7 @@ public class WatchlistMovieEntity {
     }
     public List<Genre> getGenres() {
         return stringToList(genres).stream()
+                .filter(e -> !e.equals("null"))
                 .map(Genre::valueOf)
                 .collect(Collectors.toList());
     }

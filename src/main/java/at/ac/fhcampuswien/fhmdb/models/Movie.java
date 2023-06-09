@@ -10,9 +10,6 @@ import static at.ac.fhcampuswien.fhmdb.models.Genre.DRAMA;
 import static at.ac.fhcampuswien.fhmdb.models.Genre.HORROR;
 
 public class Movie {
-
-
-
     private final String id;
     private String title;
     private String description;
