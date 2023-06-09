@@ -5,8 +5,7 @@ import at.ac.fhcampuswien.fhmdb.data.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.interfaces.ClickEventHandler;
-import at.ac.fhcampuswien.fhmdb.models.Genre;
-import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.*;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -16,11 +15,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
@@ -52,6 +49,12 @@ public class HomeController implements Initializable {
     public final ObservableList<String> observableReleaseYears = FXCollections.observableArrayList();
     public final ObservableList<String> observableRatings = FXCollections.observableArrayList();
 
+    private SortState sortState;
+
+    public void setSortState(SortState specificSortState){
+        this.sortState = specificSortState;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeState();
@@ -70,16 +73,21 @@ public class HomeController implements Initializable {
         //System.out.println(getMoviesBetweenYears(allMovies,1990,2000));
         getMoviesBetweenYears(allMovies, 1990, 2000).stream().forEach(m -> System.out.println(m.getTitle()));
     }
-
     public void initializeState() {
+        setSortState(new NoneSortState(this));
+        sortState.updateSortButton();
         allMovies = MovieAPI.getAllMovies();
-        observableMovies.clear();
-        observableMovies.addAll(allMovies);
+        setObservableMoviesToAllMovies();
         try {
             watchlistRepository = new WatchlistRepository();
         } catch (DatabaseException e){
 
         }
+    }
+
+    public void setObservableMoviesToAllMovies(){
+        observableMovies.clear();
+        observableMovies.addAll(allMovies);
     }
 
     public void initializeLayout() {
@@ -103,23 +111,19 @@ public class HomeController implements Initializable {
         filterButton.setOnAction(actionEvent -> {
             updateFilteredMovies(searchField.getText().trim().toLowerCase(), genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
             updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
+            sortState.sort();
         });
         // Search Field Event Handler (Listener)
         searchField.setOnKeyTyped(actionEvent -> {
             updateFilteredMovies(searchField.getText().trim().toLowerCase(), genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
             updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
+            sortState.sort();
         });
         // Sort Button Event Handler (Event Listener)
         sortBtn.setOnAction(actionEvent -> {
-            if (sortBtn.getText().equals("Sort (asc)")) {
-                observableMovies.sort(Comparator.comparing(Movie::getTitle)); // same same but different: movie -> movie.getTitle()
-                //sortState = SortState.ASCENDING;
-                sortBtn.setText("Sort (desc)");
-            } else {
-                observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
-                //sortState = SortState.DESCENDING;
-                sortBtn.setText("Sort (asc)");
-            }
+            sortState.toggleSortStates();
+            sortState.updateSortButton();
+            sortState.sort();
         });
         watchlistButton.setOnAction(actionEvent -> {
                 ScreenController.switchToWatchlistView();
@@ -143,6 +147,7 @@ public class HomeController implements Initializable {
         genreComboBox.setValue(genre);
         releaseYearComboBox.setValue(releaseYear);
         ratingComboBox.setValue(rating);
+
     }
     // save specific implementation of onClick method from ClickEventHandler functional interface
     private final ClickEventHandler<Movie> onAddToWatchlistClicked = (clickedMovie) -> {

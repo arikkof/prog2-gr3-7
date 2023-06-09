@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class WatchlistMovieEntity {
     @DatabaseField(generatedId = true) // generate ID automagically!
     private Long id;
-    @DatabaseField()
+    @DatabaseField() // compare for this!
     private String apiId;
     @DatabaseField()
     private String title;
