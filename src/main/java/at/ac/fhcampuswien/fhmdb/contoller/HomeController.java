@@ -155,13 +155,7 @@ public class HomeController implements Initializable {
         try {
             watchlistRepository.addToWatchlist(new WatchlistMovieEntity(clickedMovie));
         } catch (DatabaseException e) {
-            Alert a = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
-            a.setHeaderText("Error");
-            a.setTitle("Error");
-            a.show();
-            System.out.println("FAILUTE " + e.getMessage() + e.getCause());
-            e.printStackTrace();
-
+            System.out.println(e);
         }
     };
 

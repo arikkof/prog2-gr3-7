@@ -4,6 +4,7 @@ import at.ac.fhcampuswien.fhmdb.data.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.interfaces.ClickEventHandler;
+import at.ac.fhcampuswien.fhmdb.interfaces.Observer;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
@@ -23,7 +24,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 //TODO: Handle DatabaseExceptions here (show Message via UI)
-public class WatchlistController implements Initializable {
+public class WatchlistController implements Initializable, Observer {
     @FXML
     public JFXButton homeViewButton;
     @FXML
@@ -46,6 +47,7 @@ public class WatchlistController implements Initializable {
         }
         observableWatchlistMovies.clear();
         observableWatchlistMovies.addAll(allMovies);
+        watchlistRepository.subscribe(this);
     }
     public void initializeLayout(){
         movieListView.setItems(observableWatchlistMovies);
@@ -69,4 +71,13 @@ public class WatchlistController implements Initializable {
             a.show();
         }
     };
+
+    @Override
+    public void receiveUpdate(String message) {
+        System.out.println(message);
+        Alert a = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+        a.setHeaderText("Information for you");
+        a.setTitle("INFO");
+        a.show();
+    }
 }
