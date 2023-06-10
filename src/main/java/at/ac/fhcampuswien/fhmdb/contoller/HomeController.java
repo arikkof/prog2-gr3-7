@@ -51,10 +51,14 @@ public class HomeController implements Initializable, Observer {
     public final ObservableList<String> observableRatings = FXCollections.observableArrayList();
 
     private SortState sortState;
-
-    public HomeController() throws DatabaseException{
-        watchlistRepository = WatchlistRepository.getInstance();
+    public HomeController(){
+        try {
+            watchlistRepository = WatchlistRepository.getInstance();
+        } catch(DatabaseException e) {
+            e.printStackTrace();
+        }
         watchlistRepository.subscribe(this);
+        System.out.println("Constructing HomeController: " + this);
         //watchlistRepository.printObservers();
     }
 

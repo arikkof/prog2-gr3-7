@@ -1,9 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.contoller;
 
 import at.ac.fhcampuswien.fhmdb.FhmdbApplication;
-import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
-import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.models.ControllerFactory;
 import at.ac.fhcampuswien.fhmdb.models.HomeControllerFactory;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistControllerFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,26 +19,23 @@ public class ScreenController {
         ScreenController.stage=stage;
     }
     public static void switchToHomeView() {
-        //HomeControllerFactory homeviewFactory = new HomeControllerFactory();
         try {
-            switchViews("home-view.fxml", "FHMDb"/*, homeviewFactory*/);
-            //WatchlistRepository.getInstance().subscribe(new WatchlistController());
+            switchViews("home-view.fxml", "FHMDb", HomeControllerFactory.getHomeControllerFactoryInstance());
         } catch (IOException e) {
             System.out.println("FXML Failure");
             e.printStackTrace();
         }
     }
     public static void switchToWatchlistView() {
-        //HomeControllerFactory watchlistFactory = new HomeControllerFactory();
         try {
-            switchViews("watchlist-view.fxml", "Watchlist"/*, watchlistFactory*/);
+            switchViews("watchlist-view.fxml", "Watchlist", WatchlistControllerFactory.getWatchlistControllerFactoryInstance());
         } catch (IOException e) {
             System.out.println("FXML Failure in switching to Watchlist View: " + e.getMessage() + e.getCause());
         }
     }
-    public static void switchViews(String fxmlFileName, String Title/*, HomeControllerFactory controllerFactory*/) throws IOException {
+    public static void switchViews(String fxmlFileName, String Title, ControllerFactory mySpecificControllerFactory) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource(fxmlFileName));
-       // fxmlLoader.setControllerFactory(controllerFactory);
+        fxmlLoader.setControllerFactory(mySpecificControllerFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle(Title);

@@ -23,6 +23,7 @@ public class WatchlistRepository implements Observable {
         return dao;
     }
     private Observer observer;
+    private List<Observer> observers = new ArrayList<>();
     private static WatchlistRepository instance;
 
     // Singleton: private Constructor
@@ -46,8 +47,8 @@ public class WatchlistRepository implements Observable {
     }
 
     public void printObservers(){
-        //observers.stream().forEach(o -> System.out.println("Observer: " + o.toString()));
-        System.out.println("OBSVERVER:" + observer.toString());
+        observers.stream().forEach(o -> System.out.println("Observer: " + o.toString()));
+        //System.out.println("OBSVERVER:" + observer.toString());
     }
 
     public void addToWatchlist(WatchlistMovieEntity movie) throws DatabaseException {
@@ -92,19 +93,19 @@ public class WatchlistRepository implements Observable {
 
     @Override
     public void subscribe(Observer observer) {
-        //observers.add(observer);
-        this.observer = observer;
+        observers.add(observer);
+        //this.observer = observer;
     }
 
     @Override
     public void unsubscribe(Observer observer) {
-        //observers.remove(observer);
-        this.observer = null;
+        observers.remove(observer);
+        //this.observer = null;
     }
 
     @Override
     public void notifySubscribers(String message) {
-        //observers.stream().forEach(o -> {System.out.println(o); o.receiveUpdate(message);});
-        observer.receiveUpdate(message);
+        observers.stream().forEach(o -> {System.out.println(o); o.receiveUpdate(message);});
+        //observer.receiveUpdate(message);
     }
 }

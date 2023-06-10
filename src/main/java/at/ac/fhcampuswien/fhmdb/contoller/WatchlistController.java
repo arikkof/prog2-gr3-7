@@ -31,9 +31,14 @@ public class WatchlistController implements Initializable, Observer {
     public List<Movie> allMovies;
     public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();
     private WatchlistRepository watchlistRepository;
-    public WatchlistController() throws DatabaseException{
-        watchlistRepository = WatchlistRepository.getInstance();
-        watchlistRepository.subscribe(this);
+    public WatchlistController(){
+        try {
+            watchlistRepository = WatchlistRepository.getInstance();
+        } catch(DatabaseException e) {
+            e.printStackTrace();
+        }
+        //watchlistRepository.subscribe(this);
+        System.out.println("Constructing WatchlistController: " + this);
         //watchlistRepository.printObservers();
     }
     @Override
