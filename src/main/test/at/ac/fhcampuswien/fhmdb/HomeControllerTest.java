@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.contoller.HomeController;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ class HomeControllerTest {
     private Object Movie;
 
     @BeforeAll
-    static void init() { homeController = new HomeController();}
+    static void init() throws DatabaseException { homeController = new HomeController();}
 
     @Test
     void movies_and_observableMovies_are_equal(){

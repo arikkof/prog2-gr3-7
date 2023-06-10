@@ -31,6 +31,11 @@ public class WatchlistController implements Initializable, Observer {
     public List<Movie> allMovies;
     public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();
     private WatchlistRepository watchlistRepository;
+    public WatchlistController() throws DatabaseException{
+        watchlistRepository = WatchlistRepository.getInstance();
+        watchlistRepository.subscribe(this);
+        //watchlistRepository.printObservers();
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeState();
@@ -39,14 +44,12 @@ public class WatchlistController implements Initializable, Observer {
     }
     public void initializeState(){
         try {
-            watchlistRepository = WatchlistRepository.getInstance();
             allMovies = watchlistRepository.getDao().queryForAll().stream().map(Movie::new).collect(Collectors.toList());
         } catch (SQLException | DatabaseException e) {
             System.out.println(e.getMessage() + e.getCause());
         }
         observableWatchlistMovies.clear();
         observableWatchlistMovies.addAll(allMovies);
-        watchlistRepository.subscribe(this);
     }
     public void initializeLayout(){
         movieListView.setItems(observableWatchlistMovies);

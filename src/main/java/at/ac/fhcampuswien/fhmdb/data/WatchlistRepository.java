@@ -47,6 +47,7 @@ public class WatchlistRepository implements Observable {
 
     public void printObservers(){
         //observers.stream().forEach(o -> System.out.println("Observer: " + o.toString()));
+        System.out.println("OBSVERVER:" + observer.toString());
     }
 
     public void addToWatchlist(WatchlistMovieEntity movie) throws DatabaseException {

@@ -5,6 +5,7 @@ import at.ac.fhcampuswien.fhmdb.data.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.interfaces.ClickEventHandler;
+import at.ac.fhcampuswien.fhmdb.interfaces.Observer;
 import at.ac.fhcampuswien.fhmdb.models.*;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
@@ -24,7 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 //TODO: Handle DatabaseExceptions here (show Message via UI)
-public class HomeController implements Initializable {
+public class HomeController implements Initializable, Observer {
     @FXML
     public JFXButton filterButton;
     @FXML
@@ -50,6 +51,12 @@ public class HomeController implements Initializable {
     public final ObservableList<String> observableRatings = FXCollections.observableArrayList();
 
     private SortState sortState;
+
+    public HomeController() throws DatabaseException{
+        watchlistRepository = WatchlistRepository.getInstance();
+        watchlistRepository.subscribe(this);
+        //watchlistRepository.printObservers();
+    }
 
     public void setSortState(SortState specificSortState){
         this.sortState = specificSortState;
@@ -211,5 +218,14 @@ public class HomeController implements Initializable {
         return movies.stream()
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void receiveUpdate(String message) {
+        //System.out.println(message);
+        Alert a = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+        a.setHeaderText("Information for you");
+        a.setTitle("INFO");
+        a.show();
     }
 }
