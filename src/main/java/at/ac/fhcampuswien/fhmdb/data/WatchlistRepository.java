@@ -14,7 +14,7 @@ public class WatchlistRepository implements Observable {
     private final Dao<WatchlistMovieEntity, Long> dao;
     private final static String CONNECTION_ERROR_MESSAGE = "Failed to connect to database.";
     private static final String MOVIE_ALREADY_IN_WATCHLIST_MESSAGE = "The selected movie is already in your watchlist.";
-    private static final String MOVIE_SUCCESSFULLY_ADDED_TO_WATCHLIST_MESSAGE = "Movie successfully added to watchlist.";
+    private static final String MOVIE_SUCCESSFULLY_ADDED_TO_WATCHLIST_MESSAGE = "The movie was successfully added to your watchlist.";
 
     public Dao<WatchlistMovieEntity, Long> getDao() throws DatabaseException {
         return dao;
@@ -49,14 +49,14 @@ public class WatchlistRepository implements Observable {
             // only add movie if it does not exist yet
             long count = dao.queryBuilder().where().eq("apiId", movie.getApiId()).countOf();
             if(count > 0){
-                notifySubscribers(MOVIE_ALREADY_IN_WATCHLIST_MESSAGE);
+                notifySubscribers(MOVIE_ALREADY_IN_WATCHLIST_MESSAGE, "Already there.");
                 return;
             }
             if (count == 0) {
                 dao.create(movie);
             }
             if(isOnWatchlist(movie)){ // is it in the db NOW?
-                notifySubscribers(MOVIE_SUCCESSFULLY_ADDED_TO_WATCHLIST_MESSAGE);
+                notifySubscribers(MOVIE_SUCCESSFULLY_ADDED_TO_WATCHLIST_MESSAGE, "Success!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,8 +79,8 @@ public class WatchlistRepository implements Observable {
         observers.remove(observer);
     }
     @Override
-    public void notifySubscribers(String message) {
-        observers.stream().forEach(o -> o.receiveUpdate(message));
+    public void notifySubscribers(String message, String headerText) {
+        observers.stream().forEach(o -> o.receiveUpdate(message, headerText));
         printObservers();
     }
 }

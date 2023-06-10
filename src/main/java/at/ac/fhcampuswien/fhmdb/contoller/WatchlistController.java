@@ -79,11 +79,11 @@ public class WatchlistController implements Initializable, Observer {
     };
 
     @Override
-    public void receiveUpdate(String message) {
+    public void receiveUpdate(String message, String headerText) {
         //System.out.println(message);
         Alert a = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
-        a.setHeaderText("Information for you");
-        a.setTitle("INFO");
+        a.setHeaderText(headerText);
+        a.setTitle("Information for you!");
         a.show();
     }
 }
