@@ -15,12 +15,11 @@ public class AscendingSortState extends SortState{
     public void sort() {
         homeController.observableMovies.sort(Comparator.comparing(Movie::getTitle)); // Sort Ascending
     }
-    public void updateSortButton(){
-        homeController.sortBtn.setText("Sort (dsc)");
-    }
+    @Override
+    public void updateSortButton() { homeController.sortBtn.setText("Sort (desc)");} // In Anticipation
 
     @Override
     public void toggleSortStates() {
-        homeController.setSortState(new DescendingSortState(homeController));
+        homeController.setSortState(new DescendingSortState(homeController)); // In Anticipation
     }
 }

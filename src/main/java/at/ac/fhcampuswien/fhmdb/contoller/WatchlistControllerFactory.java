@@ -4,12 +4,12 @@ import javafx.util.Callback;
 
 public class WatchlistControllerFactory implements Callback<Class<?>,Object> {
 
-    // each ControllerFactory singleton
-    // stores single one instance of controller, which it returns to javaFX
+    // each ControllerFactory is singleton
+    // and stores single one instance of controller, which it returns to javaFX
     private static WatchlistControllerFactory watchlistControllerFactoryInstance;
-    private WatchlistController watchlistControllerInstance = new WatchlistController();
+    private final WatchlistController watchlistControllerInstance = new WatchlistController();
     private WatchlistControllerFactory(){}
-    public  static WatchlistControllerFactory getWatchlistControllerFactoryInstance() {
+    public  static WatchlistControllerFactory getInstance() {
         if(watchlistControllerFactoryInstance ==null){
             watchlistControllerFactoryInstance = new WatchlistControllerFactory();
         }

@@ -16,10 +16,10 @@ public class DescendingSortState extends SortState{
     @Override
     public void updateSortButton() {
         homeController.sortBtn.setText("Sort (mix up)");
-    }
+    } // In Anticipation
 
     @Override
     public void toggleSortStates() {
         homeController.setSortState(new NoneSortState(homeController));
-    }
+    } // In Anticipation
 }

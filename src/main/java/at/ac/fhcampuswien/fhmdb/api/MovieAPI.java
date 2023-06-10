@@ -18,36 +18,11 @@ import com.google.gson.Gson;
 // local API URL: "http://localhost:8080/movies"
 public class MovieAPI {
     private static final String BASEURL = "https://prog2.fh-campuswien.ac.at/movies";
-    private static final String DELIMITER = "&";
-
-    // create request
-    /*private static String buildUrl(String query, Genre genre, String releaseYear, String ratingFrom) {
-        StringBuilder url = new StringBuilder(BASEURL);
-        if ((query != null && !query.isEmpty()) || genre != null || releaseYear != null || ratingFrom != null) {
-            url.append("?");
-            if (query != null && !query.isEmpty()) {
-                url.append("query=").append(query).append(DELIMITER);
-            }
-            if (genre != null) {
-                url.append("genre=").append(genre).append(DELIMITER);
-            }
-            if (releaseYear != null) {
-                url.append("releaseYear=").append(releaseYear).append(DELIMITER);
-            }
-            if (ratingFrom != null) {
-                url.append("ratingFrom=").append(ratingFrom).append(DELIMITER);
-            }
-        }
-        return url.toString();
-    }*/
-
     // create Movie Objects from http response (json) and return in Array
     public static List<Movie> getAllMovies() {
         return getMovies(null, null, null, null);
     }
-
     public static List<Movie> getMovies(String query, Genre genre, String releaseYear, String ratingFrom) {
-        //String url = buildUrl(query, genre, releaseYear, ratingFrom);
         String url = new MovieAPIRequestBuilder(BASEURL)
                 .appendQuery(query)
                 .appendGenre(genre)

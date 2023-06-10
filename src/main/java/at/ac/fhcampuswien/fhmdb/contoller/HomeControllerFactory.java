@@ -4,12 +4,12 @@ import javafx.util.Callback;
 
 public class HomeControllerFactory implements Callback<Class<?>,Object> {
 
-    // each ControllerFactory singleton
-    // stores single one instance of controller, which it returns to javaFX
+    // each ControllerFactory is singleton
+    // and stores single one instance of controller, which it returns to javaFX
     private static HomeControllerFactory homeControllerFactoryInstance;
-    private HomeController homeControllerInstance = new HomeController();
+    private final HomeController homeControllerInstance = new HomeController();
     private HomeControllerFactory(){}
-    public static HomeControllerFactory getHomeControllerFactoryInstance() {
+    public static HomeControllerFactory getInstance() {
         if(homeControllerFactoryInstance ==null){
             homeControllerFactoryInstance = new HomeControllerFactory();
         }

@@ -50,17 +50,18 @@ public class HomeController implements Initializable, Observer {
     public final ObservableList<Genre> observableGenres = FXCollections.observableArrayList();
     public final ObservableList<String> observableReleaseYears = FXCollections.observableArrayList();
     public final ObservableList<String> observableRatings = FXCollections.observableArrayList();
-
     private SortState sortState;
+    // new Constructor provided:
     public HomeController(){
+        // retrieve WatchlistRepository Object here
         try {
             watchlistRepository = WatchlistRepository.getInstance();
         } catch(DatabaseException e) {
             e.printStackTrace();
         }
+        // Subscribe after instantiation
         watchlistRepository.subscribe(this);
         System.out.println("Constructing HomeController: " + this);
-        //watchlistRepository.printObservers();
     }
 
     public void setSortState(SortState specificSortState){
@@ -123,23 +124,21 @@ public class HomeController implements Initializable, Observer {
         filterButton.setOnAction(actionEvent -> {
             updateFilteredMovies(searchField.getText().trim().toLowerCase(), genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
             updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
-            sortState.sort();
+            sortState.sort(); // sort according to current Sort State
         });
         // Search Field Event Handler (Listener)
         searchField.setOnKeyTyped(actionEvent -> {
             updateFilteredMovies(searchField.getText().trim().toLowerCase(), genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
             updateLayout(genreComboBox.getValue(), releaseYearComboBox.getValue(), ratingComboBox.getValue());
-            sortState.sort();
+            sortState.sort(); // sort according to current Sort State
         });
         // Sort Button Event Handler (Event Listener)
         sortBtn.setOnAction(actionEvent -> {
-            sortState.toggleSortStates();
-            sortState.updateSortButton();
-            sortState.sort();
+            sortState.toggleSortStates(); // set State to next Sort State
+            sortState.updateSortButton(); // set Button Text to the Sort State after that
+            sortState.sort(); // sort according to current Sort State
         });
-        watchlistButton.setOnAction(actionEvent -> {
-                ScreenController.switchToWatchlistView();
-        });
+        watchlistButton.setOnAction(actionEvent -> ScreenController.switchToWatchlistView());
     }
 
     public void updateLayout(Genre genre, String releaseYear, String rating) {
@@ -159,7 +158,6 @@ public class HomeController implements Initializable, Observer {
         genreComboBox.setValue(genre);
         releaseYearComboBox.setValue(releaseYear);
         ratingComboBox.setValue(rating);
-
     }
     // save specific implementation of onClick method from ClickEventHandler functional interface
     private final ClickEventHandler<Movie> onAddToWatchlistClicked = (clickedMovie) -> {
@@ -167,7 +165,7 @@ public class HomeController implements Initializable, Observer {
         try {
             watchlistRepository.addToWatchlist(new WatchlistMovieEntity(clickedMovie));
         } catch (DatabaseException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     };
 
@@ -213,10 +211,9 @@ public class HomeController implements Initializable, Observer {
     }
 
     public long countMoviesFrom(List<Movie> movies, String director) {
-        var result = movies.stream()
+        return movies.stream()
                 .filter(movie -> movie.getDirectors().contains(director))
                 .count();
-        return result;
     }
 
     List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear) {

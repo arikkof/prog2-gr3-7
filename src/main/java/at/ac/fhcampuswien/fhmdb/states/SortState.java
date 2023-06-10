@@ -7,10 +7,10 @@ public abstract class SortState {
     public SortState(HomeController homeController){
         this.homeController = homeController;
     }
-    // Sort according to curren SortState
+    // Sort according to current SortState
     public abstract void sort();
-    // set SortButton's Text to current SortState
+    // set SortButton's Text to next SortState:
     public abstract void updateSortButton();
-    // set SortState to next one
+    // set to SortState, which can be expected after the current one:
     public abstract void toggleSortStates();
 }

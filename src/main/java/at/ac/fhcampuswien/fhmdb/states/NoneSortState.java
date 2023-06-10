@@ -18,11 +18,11 @@ public class NoneSortState extends SortState{
 
     @Override
     public void updateSortButton() {
-        homeController.sortBtn.setText("Sort asc");
-    }
+        homeController.sortBtn.setText("Sort (asc)");
+    } // In Anticipation
 
     @Override
     public void toggleSortStates() {
         homeController.setSortState(new AscendingSortState(homeController));
-    }
+    } // In Anticipation
 }

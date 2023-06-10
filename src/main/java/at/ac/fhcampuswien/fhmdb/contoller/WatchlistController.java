@@ -16,7 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-import java.io.IOException;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,12 +31,15 @@ public class WatchlistController implements Initializable, Observer {
     public List<Movie> allMovies;
     public ObservableList observableWatchlistMovies = FXCollections.observableArrayList();
     private WatchlistRepository watchlistRepository;
+    // new Constructor provided:
     public WatchlistController(){
+        // retrieve WatchlistRepository Object here
         try {
             watchlistRepository = WatchlistRepository.getInstance();
         } catch(DatabaseException e) {
             e.printStackTrace();
         }
+        // Subscribe here if necessary
         System.out.println("Constructing WatchlistController: " + this);
     }
     @Override
@@ -59,9 +62,7 @@ public class WatchlistController implements Initializable, Observer {
         movieListView.setCellFactory(movieListView -> new MovieCell(onRemoveFromWatchlistClicked, "Remove from Watchlist"));
     }
     public void initializeBehaviour(){
-        homeViewButton.setOnAction(actionEvent -> {
-            ScreenController.switchToHomeView();
-        });
+        homeViewButton.setOnAction(actionEvent -> ScreenController.switchToHomeView());
     }
    private final ClickEventHandler<Movie> onRemoveFromWatchlistClicked = (clickedMovie) ->
     {

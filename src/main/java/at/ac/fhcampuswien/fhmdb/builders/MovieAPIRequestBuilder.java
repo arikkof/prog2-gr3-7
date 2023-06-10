@@ -18,7 +18,7 @@ public class MovieAPIRequestBuilder {
     };
     public MovieAPIRequestBuilder appendGenre(Genre genre){
         if(genre==null){return this;}
-        this.genreString = "genre=" + genre.toString();
+        this.genreString = "genre=" + genre;
         return this;
     };
     public MovieAPIRequestBuilder appendReleaseYear(String releaseYear){

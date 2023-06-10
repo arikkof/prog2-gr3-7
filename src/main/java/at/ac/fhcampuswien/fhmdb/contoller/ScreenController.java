@@ -18,7 +18,7 @@ public class ScreenController {
     }
     public static void switchToHomeView() {
         try {
-            switchViews("home-view.fxml", "FHMDb", HomeControllerFactory.getHomeControllerFactoryInstance());
+            switchViews("home-view.fxml", "FHMDb", HomeControllerFactory.getInstance());
         } catch (IOException e) {
             System.out.println("FXML Failure");
             e.printStackTrace();
@@ -26,13 +26,14 @@ public class ScreenController {
     }
     public static void switchToWatchlistView() {
         try {
-            switchViews("watchlist-view.fxml", "Watchlist", WatchlistControllerFactory.getWatchlistControllerFactoryInstance());
+            switchViews("watchlist-view.fxml", "Watchlist", WatchlistControllerFactory.getInstance());
         } catch (IOException e) {
             System.out.println("FXML Failure in switching to Watchlist View: " + e.getMessage() + e.getCause());
         }
     }
     public static void switchViews(String fxmlFileName, String Title, Callback mySpecificControllerFactory) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource(fxmlFileName));
+        // Provide fxmlLoader with custom Factory, to retrieve instance of Controller from
         fxmlLoader.setControllerFactory(mySpecificControllerFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
         scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
