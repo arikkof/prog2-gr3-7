@@ -1,9 +1,11 @@
-package at.ac.fhcampuswien.fhmdb.models;
+package at.ac.fhcampuswien.fhmdb.contoller;
 
-import at.ac.fhcampuswien.fhmdb.contoller.HomeController;
+import javafx.util.Callback;
 
-public class HomeControllerFactory implements ControllerFactory{
+public class HomeControllerFactory implements Callback<Class<?>,Object> {
 
+    // each ControllerFactory singleton
+    // stores single one instance of controller, which it returns to javaFX
     private static HomeControllerFactory homeControllerFactoryInstance;
     private HomeController homeControllerInstance = new HomeController();
     private HomeControllerFactory(){}

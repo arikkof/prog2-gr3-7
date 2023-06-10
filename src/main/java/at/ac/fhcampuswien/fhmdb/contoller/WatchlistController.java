@@ -37,9 +37,7 @@ public class WatchlistController implements Initializable, Observer {
         } catch(DatabaseException e) {
             e.printStackTrace();
         }
-        //watchlistRepository.subscribe(this);
         System.out.println("Constructing WatchlistController: " + this);
-        //watchlistRepository.printObservers();
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

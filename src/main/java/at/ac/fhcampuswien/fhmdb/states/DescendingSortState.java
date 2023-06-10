@@ -1,6 +1,7 @@
-package at.ac.fhcampuswien.fhmdb.models;
+package at.ac.fhcampuswien.fhmdb.states;
 
 import at.ac.fhcampuswien.fhmdb.contoller.HomeController;
+import at.ac.fhcampuswien.fhmdb.models.Movie;
 
 import java.util.Comparator;
 

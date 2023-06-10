@@ -1,11 +1,11 @@
-package at.ac.fhcampuswien.fhmdb.models;
+package at.ac.fhcampuswien.fhmdb.contoller;
 
-import at.ac.fhcampuswien.fhmdb.contoller.WatchlistController;
+import javafx.util.Callback;
 
-public class WatchlistControllerFactory implements ControllerFactory{
+public class WatchlistControllerFactory implements Callback<Class<?>,Object> {
 
     // each ControllerFactory singleton
-    // stores instance of controller, which it returns to javaFX
+    // stores single one instance of controller, which it returns to javaFX
     private static WatchlistControllerFactory watchlistControllerFactoryInstance;
     private WatchlistController watchlistControllerInstance = new WatchlistController();
     private WatchlistControllerFactory(){}

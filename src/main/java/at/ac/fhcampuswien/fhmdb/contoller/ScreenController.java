@@ -1,12 +1,10 @@
 package at.ac.fhcampuswien.fhmdb.contoller;
 
 import at.ac.fhcampuswien.fhmdb.FhmdbApplication;
-import at.ac.fhcampuswien.fhmdb.models.ControllerFactory;
-import at.ac.fhcampuswien.fhmdb.models.HomeControllerFactory;
-import at.ac.fhcampuswien.fhmdb.models.WatchlistControllerFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -33,7 +31,7 @@ public class ScreenController {
             System.out.println("FXML Failure in switching to Watchlist View: " + e.getMessage() + e.getCause());
         }
     }
-    public static void switchViews(String fxmlFileName, String Title, ControllerFactory mySpecificControllerFactory) throws IOException {
+    public static void switchViews(String fxmlFileName, String Title, Callback mySpecificControllerFactory) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource(fxmlFileName));
         fxmlLoader.setControllerFactory(mySpecificControllerFactory);
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);

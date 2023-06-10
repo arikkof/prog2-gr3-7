@@ -18,6 +18,8 @@ module at.ac.fhcampuswien.fhmdb {
     requires com.h2database;
     exports at.ac.fhcampuswien.fhmdb.data;
     exports at.ac.fhcampuswien.fhmdb.contoller;
-    opens at.ac.fhcampuswien.fhmdb.contoller to javafx.fxml;
+    opens at.ac.fhcampuswien.fhmdb.contoller to com.google.gson, javafx.fxml;
+    exports at.ac.fhcampuswien.fhmdb.states;
+    opens at.ac.fhcampuswien.fhmdb.states to com.google.gson;
 
 }
