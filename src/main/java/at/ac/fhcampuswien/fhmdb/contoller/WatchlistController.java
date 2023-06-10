@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-//TODO: Handle DatabaseExceptions here (show Message via UI)
 public class WatchlistController implements Initializable, Observer {
     @FXML
     public JFXButton homeViewButton;
@@ -74,7 +73,7 @@ public class WatchlistController implements Initializable, Observer {
 
     @Override
     public void receiveUpdate(String message) {
-        System.out.println(message);
+        //System.out.println(message);
         Alert a = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
         a.setHeaderText("Information for you");
         a.setTitle("INFO");

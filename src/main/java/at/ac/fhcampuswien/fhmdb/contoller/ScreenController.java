@@ -1,6 +1,8 @@
 package at.ac.fhcampuswien.fhmdb.contoller;
 
 import at.ac.fhcampuswien.fhmdb.FhmdbApplication;
+import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,14 +14,14 @@ import java.util.Objects;
 public class ScreenController {
 
     private static Stage stage = null;
-
     public static void initializeStage(Stage stage){
         ScreenController.stage=stage;
     }
     public static void switchToHomeView() {
         try {
             switchViews("home-view.fxml", "FHMDb");
-        } catch (IOException e) {
+            WatchlistRepository.getInstance().subscribe(new WatchlistController());
+        } catch (IOException | DatabaseException e) {
             System.out.println("FXML Failure");
         }
     }
@@ -31,11 +33,11 @@ public class ScreenController {
         }
     }
     public static void switchViews(String fxmlFileName, String Title) throws IOException {
-        FXMLLoader watchlistViewFxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource(fxmlFileName));
-        Scene watchlistScene = new Scene(watchlistViewFxmlLoader.load(), 890, 620);
-        watchlistScene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
+        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource(fxmlFileName));
+        Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+        scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
         stage.setTitle(Title);
-        stage.setScene(watchlistScene);
+        stage.setScene(scene);
         stage.show();
     }
 }
